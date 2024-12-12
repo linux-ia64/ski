@@ -149,7 +149,7 @@ sal_emulator (long index, unsigned long in1, unsigned long in2,
 	status = 0;
 	if (index == SAL_FREQ_BASE) {
 		if (in1 == SAL_FREQ_BASE_PLATFORM)
-			r9 = 200000000;
+			r9 = 4000000000;
 		else if (in1 == SAL_FREQ_BASE_INTERVAL_TIMER) {
 			/*
 			 * Is this supposed to be the cr.itc frequency
