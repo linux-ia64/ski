@@ -1,0 +1,27 @@
+From 04497c8573d278238a565a1e49f112ad12e06509 Mon Sep 17 00:00:00 2001
+From: Johnny Mnemonic <jm@machine-hall.org>
+Date: Tue, 06 Oct 2025 19:15:50 +0200
+Subject: [PATCH] ia64/hp-sim: replay "scsi: switch ->bios_param() to passing
+ gendisk"
+
+See 3eb50369c09efb0f668a7f568a7e6f7cf4194cde.
+---
+ arch/ia64/hp/sim/simscsi.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/arch/ia64/hp/sim/simscsi.c b/arch/ia64/hp/sim/simscsi.c
+index a15c9ea47..38348481d 100644
+--- a/arch/ia64/hp/sim/simscsi.c
++++ b/arch/ia64/hp/sim/simscsi.c
+@@ -117,7 +117,7 @@ simscsi_interrupt (unsigned long val)
+ }
+ 
+ static int
+-simscsi_biosparam (struct scsi_device *sdev, struct block_device *n,
++simscsi_biosparam (struct scsi_device *sdev, struct gendisk *disk,
+ 		sector_t capacity, int ip[])
+ {
+ 	ip[0] = 64;		/* heads */
+-- 
+2.47.2
+
