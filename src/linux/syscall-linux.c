@@ -552,7 +552,9 @@ static char *slave;
 #endif
 
 #include <sys/syscall.h>
+#if defined (__NR_uselib)
 #define uselib(libname) syscall(__NR_uselib, libname)
+#endif
 
 extern int setresuid (uid_t, uid_t, uid_t);
 extern int getresuid (uid_t *, uid_t *, uid_t *);
@@ -573,7 +575,11 @@ static BOOL memIsMapped(ADDR adr)
 static int
 getdents (unsigned int fd, struct dirent *dirp, unsigned int count)
 {
+#if defined (__NR_getdents64)
+	return syscall (__NR_getdents64, fd, dirp, count);
+#else
 	return syscall (__NR_getdents, fd, dirp, count);
+#endif
 }
 
 extern BOOL intrsim, extint;
@@ -2338,7 +2344,7 @@ doSyscall (HWORD num, REG arg0, REG arg1, REG arg2, REG arg3, REG arg4,
       setStatReturn (ret, status);
       break;
 
-    case SYS_FCNTL:
+    case SYS_fcntl:
     case LIA64_fcntl:
       CHECK_FD (arg0);
       if (arg1 == F_GETLK || arg1 == F_SETLK || arg1 == F_SETLKW)
@@ -2762,11 +2768,13 @@ doSyscall (HWORD num, REG arg0, REG arg1, REG arg2, REG arg3, REG arg4,
       setStatReturn (ret, status);
       break;
 
+#if defined (__NR_uselib)
     case LIA64_uselib:
       memBBRd (ADDPTR (arg0), buf, 0);
       *status = uselib ((char *) buf);
       setStatReturn (ret, status);
       break;
+#endif
 
     case LIA64_swapon:
       memBBRd (ADDPTR (arg0), buf, 0);
